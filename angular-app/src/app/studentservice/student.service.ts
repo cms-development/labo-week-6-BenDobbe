@@ -15,32 +15,79 @@ import axios from 'axios';
 export class StudentService {
   public studentUrl = 'http://cmsdevdrupal.local/jsonapi/student/student';
 
-  constructor() {}
+  constructor() {
+    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('access_student')}`;
+}
 
-  public async getStudents<T>(): Promise<T> {
+async getStudents(): Promise<Json> {
+  try {
+   const res = await axios.request<Json>({
+     method: 'get',
+     url: `${this.studentUrl}?sort=-created`,
+   });
+
+   return res.data;
+  } catch (err) {
+     console.log(err);
+  }
+}
+
+   // ADD
+   async addStudent(student: Json): Promise<Student> {
     try {
-      const res = await axios.request<T>({
-        method: 'get',
-        url: this.studentUrl
+      const res = await axios.request<Student>({
+        method: 'post',
+        url: this.studentUrl,
+        data: student
       });
       return res.data;
-    } catch (error) {
-      return Promise.reject(this.handleError(error));
+    } catch (err) {
+      console.log(err);
     }
-  }
+}
 
-  /*async getStudents(): Promise<Json> {
+   async getStudent(id: string): Promise<Json> {
     try {
-     const res = await axios.request<Json>({
-       method: 'get',
-       url: `${this.studentUrl}?sort=-created`,
-     });
+       const res = await axios.request<Json>({
+         method: 'get',
+         url: `${this.studentUrl}/${id}`,
+       });
 
-     return res.data;
+       return res.data;
     } catch (err) {
        console.log(err);
     }
-  }*/
+  }
+
+ async updateStudent(student: Student): Promise<Student> {
+   try {
+     const res = await axios.request<Student>({
+       method: 'patch',
+       url: `${this.studentUrl}/${student.id}`,
+       data: student
+     });
+
+     return res.data;
+   } catch (err) {
+     console.log(err);
+   }
+ }
+
+  async deleteStudent(student: Student | string): Promise<Student> {
+  try {
+    const id = student;
+
+    const res = await axios.request<Student>({
+      method: 'delete',
+      url: `${this.studentUrl}/${id}`
+    });
+
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+  }
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

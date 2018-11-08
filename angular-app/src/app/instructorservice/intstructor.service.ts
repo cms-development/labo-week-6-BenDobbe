@@ -33,6 +33,62 @@ export class InstructorService {
     }
   }
 
+ // ADD
+ async addInstructor(instructor: Json): Promise<Instructor> {
+  try {
+    const res = await axios.request<Instructor>({
+      method: 'post',
+      url: this.instructorUrl,
+      data: instructor
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+ async getinstructor(id: string): Promise<Json> {
+  try {
+     const res = await axios.request<Json>({
+       method: 'get',
+       url: `${this.instructorUrl}/${id}`,
+     });
+
+     return res.data;
+  } catch (err) {
+     console.log(err);
+  }
+}
+
+async updateInstructor(instructor: Instructor): Promise<Instructor> {
+ try {
+   const res = await axios.request<Instructor>({
+     method: 'patch',
+     url: `${this.instructorUrl}/${instructor.id}`,
+     data: instructor
+   });
+
+   return res.data;
+ } catch (err) {
+   console.log(err);
+ }
+}
+
+async deleteInstructor(instructor: Instructor | string): Promise<Instructor> {
+try {
+  const id = instructor;
+
+  const res = await axios.request<Instructor>({
+    method: 'delete',
+    url: `${this.instructorUrl}/${id}`
+  });
+
+  return res.data;
+} catch (err) {
+  console.log(err);
+}
+}
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);

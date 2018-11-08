@@ -32,6 +32,62 @@ export class CourseService {
     }
   }
 
+ // ADD
+ async addCourse(course: Json): Promise<Course> {
+  try {
+    const res = await axios.request<Course>({
+      method: 'post',
+      url: this.courseUrl,
+      data: course
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+ async getcourse(id: string): Promise<Json> {
+  try {
+     const res = await axios.request<Json>({
+       method: 'get',
+       url: `${this.courseUrl}/${id}`,
+     });
+
+     return res.data;
+  } catch (err) {
+     console.log(err);
+  }
+}
+
+async updateCourse(course: Course): Promise<Course> {
+ try {
+   const res = await axios.request<Course>({
+     method: 'patch',
+     url: `${this.courseUrl}/${course.id}`,
+     data: course
+   });
+
+   return res.data;
+ } catch (err) {
+   console.log(err);
+ }
+}
+
+async deleteCourse(course: Course | string): Promise<Course> {
+try {
+  const id = course;
+
+  const res = await axios.request<Course>({
+    method: 'delete',
+    url: `${this.courseUrl}/${id}`
+  });
+
+  return res.data;
+} catch (err) {
+  console.log(err);
+}
+}
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
