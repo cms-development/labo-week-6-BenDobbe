@@ -31,8 +31,8 @@ export class StudentsComponent implements OnInit {
 
   getStudents(): void {
     this.studentService.getStudents()
-        .then(studentsData => {
-          this.students = studentsData.data;
+        .then(students => {
+          this.students = students.data;
         });
     console.log(this.students);
   }
