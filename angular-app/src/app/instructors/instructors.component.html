@@ -1,0 +1,13 @@
+
+<div class="container" >
+    <h1 class="center-align">instructors</h1>
+
+    <div class="collection">
+        <ul>
+            <li class="collection-item avatar" *ngFor="let instructor of instructors">
+              <a routerLink="/instructors/{{instructor.id}}"><span class="title">{{instructor.attributes.name}}</span></a>
+            </li>
+        </ul>
+    </div>
+  </div>
+
